@@ -80,6 +80,11 @@ def upload_batch(upload_data_txt):
     res_txt = "OK" if not result['errors'] else "FAILED"
     took = int(result['took'])
     logging.info("Upload: %s - upload took: %5dms, total docs uploaded: %7d" % (res_txt, took, upload_data_count))
+    if tornado.options.options.sleep_time:
+        ts_start = int(time.time())
+        time.sleep(tornado.options.options.sleep_time)
+        took_secs = int(time.time() - ts_start)
+        logging.info("Slept for %d seconds after last batch" % took_secs)
 
 
 def get_data_for_format(format):
@@ -314,6 +319,7 @@ if __name__ == '__main__':
     tornado.options.define("index_name", type=str, default='test_data', help="Name of the index to store your messages")
     tornado.options.define("index_type", type=str, default='test_type', help="Type")
     tornado.options.define("batch_size", type=int, default=1000, help="Elasticsearch bulk index batch size")
+    tornado.options.define("sleep_time", type=int, default=0, help="Sleep this long between batches")
     tornado.options.define("num_of_shards", type=int, default=2, help="Number of shards for ES index")
     tornado.options.define("http_upload_timeout", type=int, default=3, help="Timeout in seconds when uploading data")
     tornado.options.define("count", type=int, default=100000, help="Number of docs to generate")
