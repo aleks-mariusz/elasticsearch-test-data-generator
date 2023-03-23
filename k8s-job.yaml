@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: elasticsearch-gendata
+spec:
+  template:
+    spec:
+      containers:
+      - name: gendata
+        image: docker.io/aleksmariusz/elasticsearch-test-data-generator:latest
+        args:
+        - --es-url=http://elasticsearch-svc:9200
+        - --index-type=None
+        - --count=20
+        - --batch-size=1
+        - --sleep-time=1
+        - --logging=debug
+      restartPolicy: Never
+  backoffLimit: 4
