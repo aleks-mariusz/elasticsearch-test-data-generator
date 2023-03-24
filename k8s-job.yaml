@@ -9,7 +9,7 @@ spec:
       - name: gendata
         image: docker.io/aleksmariusz/elasticsearch-test-data-generator:latest
         args:
-        - --es-url=http://elasticsearch-svc:9200
+        - --es-url=http://elasticsearch:9200
         - --index-type=None
         - --count=20
         - --batch-size=1
